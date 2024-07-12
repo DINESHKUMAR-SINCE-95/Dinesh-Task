@@ -1,7 +1,8 @@
 
 1. Calculate the total number of vowels and the count of each individual vowel
 python
-Copy code
+
+
 def count_vowels(s):
     vowels = 'AEIOUaeiou'
     total_count = 0
@@ -28,7 +29,7 @@ print(f"Count of each vowel: {individual_vowel_counts}")
 
 2. Create a Pyramid of Numbers from 1 to 20 using a For loop
 python
-Copy code
+
 n = 20
 for i in range(1, n + 1):
     print(' ' * (n - i) + ' '.join(map(str, range(1, i + 1))))
@@ -36,7 +37,7 @@ for i in range(1, n + 1):
     
 3. Remove all vowels from a string
 python
-Copy code
+
 def remove_vowels(s):
     vowels = 'AEIOUaeiou'
     return ''.join([char for char in s if char not in vowels])
@@ -48,7 +49,7 @@ print(new_string)
 
 4. Count the number of unique characters in a string
 python
-Copy code
+
 def unique_characters_count(s):
     return len(set(s))
 
@@ -59,7 +60,7 @@ print(unique_count)
 
 5. Check if a string is a palindrome
 python
-Copy code
+
 def is_palindrome(s):
     s = s.replace(" ", "").lower()
     return s == s[::-1]
@@ -70,7 +71,7 @@ print(is_palindrome(string))
 
 6. Find the longest common substring between two strings
 python
-Copy code
+
 def longest_common_substring(s1, s2):
     m = len(s1)
     n = len(s2)
@@ -99,7 +100,7 @@ print(longest_common_substring(s1, s2))
 
 7. Find the most frequent character in a string
 python
-Copy code
+
 from collections import Counter
 
 def most_frequent_character(s):
@@ -114,7 +115,7 @@ print(most_frequent_character(string))
 
 8. Check if two strings are anagrams
 python
-Copy code
+
 def are_anagrams(s1, s2):
     return sorted(s1.replace(" ", "").lower()) == sorted(s2.replace(" ", "").lower())
 
@@ -126,7 +127,7 @@ print(are_anagrams(s1, s2))
 
 9. Count the number of words in a string
 python
-Copy code
+
 def word_count(s):
     return len(s.split())
 
