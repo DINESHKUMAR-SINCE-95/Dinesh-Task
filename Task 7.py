@@ -1,6 +1,6 @@
-Here is the Python program that accomplishes the tasks mentioned:
+#Here is the Python program that accomplishes the tasks mentioned:
 
-```python
+
 import os
 from datetime import datetime
 
@@ -30,10 +30,10 @@ create_timestamp_file()  # This will create a file with the current timestamp
 # To read the file, use the read_file function with the name of the created file
 # For example, if the created file is '2023-07-12_10-30-45.txt':
 # read_file('2023-07-12_10-30-45.txt')
-```
+
 
 ### Explanation:
-
+"""
 1. **Creating a Timestamp File:**
    - The `create_timestamp_file` function retrieves the current timestamp and formats it.
    - The function then creates a file named with this timestamp and writes the timestamp as its content.
@@ -47,3 +47,4 @@ create_timestamp_file()  # This will create a file with the current timestamp
 ### Note:
 - The `create_timestamp_file` function creates a new file with a unique name based on the current timestamp each time it is called.
 - You need to pass the correct file name to the `read_file` function to read the content. The example usage provided demonstrates how to use these functions.
+"""
