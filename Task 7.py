@@ -33,18 +33,18 @@ create_timestamp_file()  # This will create a file with the current timestamp
 
 
 ### Explanation:
-"""
-1. **Creating a Timestamp File:**
-   - The `create_timestamp_file` function retrieves the current timestamp and formats it.
-   - The function then creates a file named with this timestamp and writes the timestamp as its content.
-   - Finally, it prints a message indicating that the file was created and shows its content.
 
-2. **Reading from a File:**
-   - The `read_file` function checks if the specified file exists.
-   - If the file exists, it reads the content and prints it to the console.
-   - If the file does not exist, it prints a message indicating the file does not exist.
+#1. **Creating a Timestamp File:**
+#  - The `create_timestamp_file` function retrieves the current timestamp and formats it.
+  # - The function then creates a file named with this timestamp and writes the timestamp as its content.
+#   - Finally, it prints a message indicating that the file was created and shows its content.
+
+#2. **Reading from a File:**
+#   - The `read_file` function checks if the specified file exists.
+#   - If the file exists, it reads the content and prints it to the console.
+#   - If the file does not exist, it prints a message indicating the file does not exist.
 
 ### Note:
-- The `create_timestamp_file` function creates a new file with a unique name based on the current timestamp each time it is called.
-- You need to pass the correct file name to the `read_file` function to read the content. The example usage provided demonstrates how to use these functions.
-"""
+#- The `create_timestamp_file` function creates a new file with a unique name based on the current timestamp each time it is called.
+#- You need to pass the correct file name to the `read_file` function to read the content. The example usage provided demonstrates how to use these functions.
+
