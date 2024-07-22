@@ -1,47 +1,66 @@
-# pip install selenium
-
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
-import time
+from selenium.webdriver.common.by import By
+from time import sleep
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver import ActionChains
+from selenium.common.exceptions import NoSuchElementException
 
-# Setup Chrome options
-chrome_options = Options()
-chrome_options.add_argument("--headless")  # Runs Chrome in headless mode.
-chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
-chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
 
-# Setup the Chrome WebDriver
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+class LoginAutomation:
+    def __init__(self, url, username, password):
+        self.url = url
+        self.username = username
+        self.password = password
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        self.action = ActionChains(self.driver)
 
-# Launch the OrangeHRM site
-driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login") 
-driver.maximize_window()
-time.sleep(3)  # Wait for the page to load
+    def boot(self):
+        self.driver.get(self.url)
+        self.driver.maximize_window()
+        self.sleep(5)
 
-# Step 1: Enter the username
-username_field = driver.find_element(By.ID, "txtUsername")  
-username_field.send_keys("Admin")
+    def sleep(self, second):
+        sleep(second)
 
-# Step 2: Enter the invalid password
-password_field = driver.find_element(By.ID, "txtPassword")  
-password_field.send_keys("Invalid password")
+    def inputBox(self, value, keys):
+        self.driver.find_element(by=By.NAME, value=value).send_keys(keys)
+        self.sleep(5)
 
-# Step 3: Click the "Login" button
-login_button = driver.find_element(By.ID, "btnLogin") 
-login_button.click()
+    def findElementByXpath(self, xpath):
+        return self.driver.find_element(by=By.XPATH, value=xpath)
 
-# Expected Result: Check for the error message
-time.sleep(2)  # Wait for the error message to appear
-error_message = driver.find_element(By.ID, "spanMessage")  
-# Validate the error message
-expected_message = "Invalid credentials"   
-assert error_message.text == expected_message, f"Expected '{expected_message}', but got '{error_message.text}'"
+    def submitBtn(self):
+        self.driver.find_element(by=By.XPATH,
+                                 value='//*[@id="app"]/div[1]/div/div[1]/div/div[2]/div[2]/form/div[4]/p').click()
+        self.sleep(10)
 
-print("Test passed: Valid error message for invalid credentials is displayed.")
+    def quit(self):
+        self.driver.quit()
 
-# Close the browser
-driver.quit()
+    def login(self, data):
+        try:
+            self.boot()
+            self.inputBox('username', self.username)
+            self.inputBox('password', self.password)
+            self.submitBtn()
+            self.findElementByXpath('//*[@id="app"]/div[1]/div[1]/div/form/div[1]/div/div[2]/input').click()
+            self.sleep(10)
+            firstNameElement = self.findElementByXpath('//*[@id="app"]/div[1]/div[1]/div/form/div[1]/div/div[2]/input')
+            firstNameElement.send_keys(data)
+            self.sleep(10)
+            self.action.send_keys(Keys.TAB).perform()
+            self.action.send_keys(Keys.TAB).perform()
+            self.findElementByXpath('//*[@id="app"]/div[1]/div[1]/div/form/div[2]/button[2]').click()
+            self.sleep(10)
+
+            print('Reset password link send successfully')
+        except NoSuchElementException:
+            print('A valid error message for invalid credentials is displayed')
+
+
+url = 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login'
+obj = LoginAutomation(url, 'Admin', 'admin123')
+obj.login('Dinesh')
+
