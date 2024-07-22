@@ -1,47 +1,86 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
+from time import sleep
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver import ActionChains
+from selenium.common.exceptions import NoSuchElementException
 
-# Initialize the web driver
-driver = webdriver.Chrome() 
-driver.maximize_window()
+class PIM:
+    def _init_(self, url, username, password):
+        self.url = url
+        self.username = username
+        self.password = password
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        self.action = ActionChains(self.driver)
 
-# Precondition: Login to Orange HRM
-def login(driver, username, password):
-    driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")  
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "txtUsername"))).send_keys(username)
-    driver.find_element(By.ID, "txtPassword").send_keys(password)
-    driver.find_element(By.ID, "btnLogin").click()
+    def boot(self):
+        self.driver.get(self.url)
+        self.driver.maximize_window()
+        self.sleep(5)
 
-# Test Steps
-def add_employee(driver, first_name, last_name, employee_id):
-    # Go to PIM module
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "menu_pim_viewPimModule"))).click()
+    def sleep(self, second):
+        sleep(second)
 
-    # Click on Add Employee
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "menu_pim_addEmployee"))).click()
+    def inputBox(self, value, keys):
+        self.driver.find_element(by=By.NAME, value=value).send_keys(keys)
+        self.sleep(5)
 
-    # Fill in employee details
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "firstName"))).send_keys(first_name)
-    driver.find_element(By.ID, "lastName").send_keys(last_name)
-    driver.find_element(By.ID, "employeeId").clear()
-    driver.find_element(By.ID, "employeeId").send_keys(employee_id)
+    def submitBtn(self):
+        self.driver.find_element(by=By.TAG_NAME, value='button').click()
+        self.sleep(10)
 
-    # Save employee details
-    driver.find_element(By.ID, "btnSave").click()
+    def quit(self):
+        self.driver.quit()
 
-    # Verify successful addition
-    success_message = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, ".message.success"))).text
-    assert "Successfully Saved" in success_message, "Employee was not added successfully."
+    def findElementByXpath(self, xpath): #find the element by xpath
+        return self.driver.find_element(by=By.XPATH, value=xpath)
 
-# Execute the test case
-try:
-    login(driver, "valid_username", "valid_password")
-    add_employee(driver, "John", "Doe", "12345")
-    print("Test case TC_PIM_01 passed.")
-except Exception as e:
-    print(f"Test case TC_PIM_01 failed: {e}")
-finally:
-    driver.quit()
+    def login(self, data1, data2, data3):
+        try:
+            self.boot()
+            self.inputBox('username', self.username)
+            self.inputBox('password', self.password)
+            self.submitBtn()
+            self.sleep(3)
+            self.findElementByXpath('//*[@id="app"]/div[1]/div[1]/aside/nav/div[2]/ul/li[2]/a/span').click()
+            self.sleep(5)
+            self.findElementByXpath('//*[@id="app"]/div[1]/div[1]/header/div[2]/nav/ul/li[3]/a').click()
+            self.sleep(5)
+
+
+            self.findElementByXpath('//*[@id="app"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div[2]/div[1]/div[1]/div/div/div[2]/div[1]/div[2]/input').click()
+            firstNameElement = self.findElementByXpath('//*[@id="app"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div[2]/div[1]/div[1]/div/div/div[2]/div[1]/div[2]/input')
+            firstNameElement.send_keys(data1)
+
+
+            self.sleep(5)
+            self.action.send_keys(Keys.TAB).perform()
+            secondNameElement = self.findElementByXpath('//*[@id="app"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div[2]/div[1]/div[1]/div/div/div[2]/div[2]/div[2]/input')
+            secondNameElement.send_keys(data2)
+            self.sleep(3)
+            self.action.send_keys(Keys.TAB).perform()
+
+
+            thirdNameElement = self.findElementByXpath('//*[@id="app"]/div[1]/div[2]/div[2]/div/div/form/div[1]/div[2]/div[1]/div[1]/div/div/div[2]/div[3]/div[2]/input')
+            thirdNameElement.send_keys(data3)
+            self.sleep(3)
+
+
+            self.action.send_keys(Keys.TAB).perform()
+            self.action.send_keys(Keys.TAB).perform()
+            self.action.send_keys(Keys.TAB).perform()
+
+            self.findElementByXpath('//*[@id="app"]/div[1]/div[2]/div[2]/div/div/form/div[2]/button[2]').click()
+            self.sleep(10)
+
+            print('The new employee is successful added')
+        except NoSuchElementException:
+            print('no new employee is added')
+
+
+url = 'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login'
+obj = PIM(url, 'Admin', 'admin123')
+obj.login('Dinesh','Kumar','Aw')
+
