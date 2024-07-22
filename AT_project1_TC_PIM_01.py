@@ -5,12 +5,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 # Initialize the web driver
-driver = webdriver.Chrome()  # or any other driver like Firefox, Edge, etc.
+driver = webdriver.Chrome() 
 driver.maximize_window()
 
 # Precondition: Login to Orange HRM
 def login(driver, username, password):
-    driver.get("http://example-orangehrm-url.com")  # replace with actual URL
+    driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")  
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "txtUsername"))).send_keys(username)
     driver.find_element(By.ID, "txtPassword").send_keys(password)
     driver.find_element(By.ID, "btnLogin").click()
