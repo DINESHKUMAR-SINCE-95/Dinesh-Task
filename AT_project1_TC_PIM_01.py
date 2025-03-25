@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager546
 from selenium.webdriver.common.by import By
 from time import sleep
 from selenium.webdriver.common.keys import Keys
@@ -44,9 +44,9 @@ class PIM:
             self.inputBox('password', self.password)
             self.submitBtn()
             self.sleep(3)
-            self.findElementByXpath('//*[@id="app"]/div[1]/div[1]/aside/nav/div[2]/ul/li[2]/a/span').click()
+            self.findElementByXpath('//*[@id="app"]/div[1]/div[1]/aside/nav/div[2]/ul/li[2]/a/span').
             self.sleep(5)
-            self.findElementByXpath('//*[@id="app"]/div[1]/div[1]/header/div[2]/nav/ul/li[3]/a').click()
+            self.findElementByXpath('//*[@id="app"]/div[1]/div[1]/header/div[2]/nav/ul/li[3]/a').
             self.sleep(5)
 
 
